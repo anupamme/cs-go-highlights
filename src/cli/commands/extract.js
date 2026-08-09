@@ -254,7 +254,18 @@ function getZipExtractorCommands(archivePath, extractTo) {
 
 function runProcess(command, args) {
   return new Promise((resolve, reject) => {
-    const child = spawn(command, args, { stdio: ['ignore', 'ignore', 'pipe'] });
+    let child;
+    if (command === 'unzip') {
+      child = spawn('unzip', args, { stdio: ['ignore', 'ignore', 'pipe'] });
+    } else if (command === 'bsdtar') {
+      child = spawn('bsdtar', args, { stdio: ['ignore', 'ignore', 'pipe'] });
+    } else if (command === 'tar') {
+      child = spawn('tar', args, { stdio: ['ignore', 'ignore', 'pipe'] });
+    } else if (command === 'powershell.exe') {
+      child = spawn('powershell.exe', args, { stdio: ['ignore', 'ignore', 'pipe'] });
+    } else {
+      return reject(new Error(`Command not allowed: ${command}`));
+    }
     let stderr = '';
 
     child.stderr.on('data', chunk => {
