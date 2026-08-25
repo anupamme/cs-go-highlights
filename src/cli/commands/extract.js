@@ -172,10 +172,6 @@ async function extractRecursive(archivePath, extractTo, demoFiles, depth) {
   await scanDirectory(extractTo, demoFiles, depth);
 }
 
-/**
- * Extract a .zip archive in-process so user-controlled paths are never passed
- * to command interpreters or executables resolved from PATH.
- */
 function extractZip(archivePath, extractTo) {
   return new Promise((resolve, reject) => {
     yauzl.open(archivePath, { lazyEntries: true }, (err, zipfile) => {
